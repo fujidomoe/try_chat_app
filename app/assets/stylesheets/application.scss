@@ -1,0 +1,51 @@
+/*
+ *= require_tree .
+ *= require_self
+ */
+
+@import "bootstrap/scss/bootstrap";
+
+// ログイン画面
+
+.login-container {
+  @extend .container-fluid;
+  max-width: 576px;
+  padding: 2rem;
+}
+
+// 「ログインしました」などのフラッシュ用スタイル
+
+.alert-notice {
+  @extend .alert-info;
+}
+
+.alert-alert {
+  @extend .alert-danger;
+}
+
+// メッセージ一覧
+#message-container {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 1rem 1rem 8rem 1rem;
+}
+
+// メッセージ投稿フォーム
+footer {
+  max-width: 768px;
+  padding: 1rem;
+  margin: 0 auto;
+  background-color: white;
+}
+
+// ボタン無効化時のスタイル
+.btn-primary.disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  cursor: auto;
+}
+
+// ユーザーがフォームサイズを自由に変更できる機能を停止させておく
+#message_content {
+  resize: none;
+}
