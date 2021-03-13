@@ -1,8 +1,15 @@
 # frozen_string_literal: true
 
-class DeviseCreateUsers < ActiveRecord::Migration[6.0]
+class CreateInitTable < ActiveRecord::Migration[6.0]
   def change
+
+    create_table :organizations do |t|
+      t.string :name, null: false
+      t.timestamps
+    end
+
     create_table :users do |t|
+      t.references :organization, foreign_key: true, null: false
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
@@ -32,7 +39,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       # t.string   :unlock_token # Only if unlock strategy is :email or :both
       # t.datetime :locked_at
 
-
       t.timestamps null: false
     end
 
@@ -40,5 +46,18 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
     add_index :users, :reset_password_token, unique: true
     # add_index :users, :confirmation_token,   unique: true
     # add_index :users, :unlock_token,         unique: true
-  end
+    create_table :rooms do |t|
+      t.references :organization, foreign_key: true, null: false
+      t.string :name, null: false
+      t.timestamps
+    end
+
+    create_table :messages do |t|
+      t.references :user, foreign_key: true, null: false
+      t.references :room, foreign_key: true, null: false
+      t.text :content, null: false
+      t.timestamps
+    end
+
+    end
 end

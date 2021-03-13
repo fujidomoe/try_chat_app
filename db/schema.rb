@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_13_012729) do
+ActiveRecord::Schema.define(version: 2021_03_13_012545) do
 
   create_table "messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -22,23 +22,22 @@ ActiveRecord::Schema.define(version: 2021_03_13_012729) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
-  create_table "room_users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "room_id", null: false
+  create_table "organizations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["room_id", "user_id"], name: "index_room_users_on_room_id_and_user_id", unique: true
-    t.index ["room_id"], name: "index_room_users_on_room_id"
-    t.index ["user_id"], name: "index_room_users_on_user_id"
   end
 
   create_table "rooms", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "name", null: false
+    t.bigint "organization_id", null: false
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_rooms_on_organization_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "organization_id", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -47,11 +46,12 @@ ActiveRecord::Schema.define(version: 2021_03_13_012729) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["organization_id"], name: "index_users_on_organization_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "messages", "rooms"
   add_foreign_key "messages", "users"
-  add_foreign_key "room_users", "rooms"
-  add_foreign_key "room_users", "users"
+  add_foreign_key "rooms", "organizations"
+  add_foreign_key "users", "organizations"
 end

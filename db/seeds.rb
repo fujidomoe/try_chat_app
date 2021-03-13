@@ -11,19 +11,17 @@ user_count = 5
 message_count = 5
 
 ApplicationRecord.transaction do
+  organization = Organization.create!(name: "organization")
+
   # テストユーザーが無ければ作成
   user_count.times do |n|
     User.find_or_create_by!(email: "test#{n + 1}@example.com") do |user|
       user.password = 'password'
+      user.organization = organization
     end
   end
 
-  room = Room.create!(name: "test")
-  user1 = User.find(1)
-  user2 = User.find(2)
-  RoomUser.create!(user: user1, room: room)
-  RoomUser.create!(user: user2, room: room)
-
+  room = Room.create!(name: "room", organization: organization)
 
   # メッセージを全消去した上で，サンプルメッセージを作成。メッセージを作成したユーザーはランダムに決定する
   Message.destroy_all
