@@ -3,6 +3,7 @@ class RoomChannel < ApplicationCable::Channel
     logger.debug("VVVVVVVVV");
     # 配信する部屋名を決定
     stream_from "room_channel"
+    # stream_from "room_channel_#{params['room']}"
   end
 
   def unsubscribed
