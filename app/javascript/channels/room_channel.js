@@ -11,7 +11,8 @@ document.addEventListener('turbolinks:load', () => {
         return
     }
 
-    consumer.subscriptions.create("RoomChannel", {
+    const room_id = $('#room').data("room_id");
+    const chatChannel = consumer.subscriptions.create({ channel: 'RoomChannel', room_id: room_id }, {
         connected() {
         },
 
