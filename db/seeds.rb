@@ -7,16 +7,21 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # 作成するユーザー・メッセージの個数
-user_count = 3
-message_count = 3
+user_count = 5
+message_count = 5
 
 ApplicationRecord.transaction do
+  organization = Organization.create!(name: "organization")
+
   # テストユーザーが無ければ作成
   user_count.times do |n|
     User.find_or_create_by!(email: "test#{n + 1}@example.com") do |user|
       user.password = 'password'
+      user.organization = organization
     end
   end
+
+  room = Room.create!(name: "room", organization: organization)
 
   # メッセージを全消去した上で，サンプルメッセージを作成。メッセージを作成したユーザーはランダムに決定する
   Message.destroy_all
@@ -27,7 +32,7 @@ ApplicationRecord.transaction do
     line_count = rand(1..4)
     # Fakerで１〜４行のランダムメッセージを作成
     content = Faker::Lorem.paragraphs(number: line_count).join("\n")
-    message_list << { user_id: user_id, content: content }
+    message_list << { user_id: user_id, content: content, room: room}
   end
   Message.create!(message_list)
 end

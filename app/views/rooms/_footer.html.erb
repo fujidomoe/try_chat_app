@@ -1,5 +1,6 @@
 <footer class="fixed-bottom" id="footer">
   <%= form_with model: @message do |f| %>
+    <%= f.hidden_field :room_id, :value => @room.id %>
     <div class="form-group">
       <!-- ここは自動的に message_content というidが付きます。アンダーバーなので注意！ -->
       <%= f.text_area :content, class: 'form-control', rows: '1', maxlength: '500' %>
@@ -10,3 +11,4 @@
     </div>
   <% end %>
 </footer>
+<div id="room" data-room_id="<%= @room.id %>"></div>
